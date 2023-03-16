@@ -12,16 +12,12 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "name")
+    private String name;
     @Column(name = "amount")
     private long amount;
     @Column(name = "stock")
     private long stock;
 
-    @ManyToOne
-    @JoinColumn(name = "id_type")
-    private Type type;
 
-    @ManyToOne
-    @JoinColumn(name = "id_category")
-    private Category category;
 }

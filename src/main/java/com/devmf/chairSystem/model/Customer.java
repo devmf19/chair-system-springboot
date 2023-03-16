@@ -22,8 +22,8 @@ public class Customer implements Serializable {
     private String lastname;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "adreess")
-    private String adreess;
+    @Column(name = "address")
+    private String address;
     @Column(name = "email")
     private String email;
 }
