@@ -19,7 +19,7 @@ public class SettingService implements ISettingService {
     @Override
     public SettingDto getSetting() {
         return settingMap.entityToDto(
-                settingRepository.findById(1L).get()
+                settingRepository.findAll().get(0)
         );
     }
 

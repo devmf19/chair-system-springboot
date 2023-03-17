@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMap {
     public ProductDto entityToDto(Product product) {
+        if(product == null ) {
+            return null;
+        }
         ProductDto productDto = new ProductDto();
 
         productDto.setId(product.getId());
@@ -18,6 +21,9 @@ public class ProductMap {
     }
 
     public Product dtoToEntity(ProductDto productDto) {
+        if(productDto == null ) {
+            return null;
+        }
         Product product = new Product();
 
         product.setId(productDto.getId());

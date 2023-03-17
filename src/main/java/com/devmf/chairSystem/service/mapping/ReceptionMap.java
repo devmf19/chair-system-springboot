@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReceptionMap {
     public ReceptionDto entityToDto(Reception reception) {
+        if(reception == null ) {
+            return null;
+        }
         ReceptionDto receptionDto =  new ReceptionDto();
 
         receptionDto.setId(reception.getId());
@@ -18,6 +21,9 @@ public class ReceptionMap {
     }
 
     public Reception dtoToEntity(ReceptionDto receptionDto) {
+        if(receptionDto == null ) {
+            return null;
+        }
         Reception reception =  new Reception();
 
         reception.setId(receptionDto.getId());

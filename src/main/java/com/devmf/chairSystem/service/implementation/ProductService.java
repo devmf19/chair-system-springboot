@@ -5,20 +5,18 @@ import com.devmf.chairSystem.repository.ProductRepository;
 import com.devmf.chairSystem.service.interfaces.IProductService;
 import com.devmf.chairSystem.service.mapping.ProductMap;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductService implements IProductService {
 
-    @Autowired
     private ProductRepository productRepository;
 
-    private ProductMap productMap = new ProductMap();
+    private ProductMap productMap;
 
 
     @Override
@@ -30,12 +28,10 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Optional<ProductDto> getProductById(long id) {
-        return Optional.of(
-                productMap.entityToDto(
-                        productRepository.findById(id).get()
-                )
-        );
+    public ProductDto getProductById(long id) {
+        return productRepository.findById(id)
+                .map(productMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

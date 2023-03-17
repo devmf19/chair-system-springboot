@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class EventDetailMap {
     public EventDetailDto entityToDto(EventDetail eventDetail){
+        if(eventDetail == null ) {
+            return null;
+        }
         EventDetailDto eventDetailDto = new EventDetailDto();
 
         eventDetailDto.setId(eventDetail.getId());
@@ -19,6 +22,9 @@ public class EventDetailMap {
     }
 
     public EventDetail dtoToEntity(EventDetailDto eventDetailDto){
+        if(eventDetailDto == null ) {
+            return null;
+        }
         EventDetail eventDetail = new EventDetail();
 
         eventDetail.setId(eventDetailDto.getId());

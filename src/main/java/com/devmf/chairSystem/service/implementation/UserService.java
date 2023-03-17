@@ -4,21 +4,19 @@ import com.devmf.chairSystem.dto.UserDto;
 import com.devmf.chairSystem.repository.UserRepository;
 import com.devmf.chairSystem.service.interfaces.IUserService;
 import com.devmf.chairSystem.service.mapping.UserMap;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserService implements IUserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private UserMap userMap = new UserMap();
+    private final UserMap userMap;
 
 
     @Override
@@ -30,12 +28,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<UserDto> getUserById(long id) {
-        return Optional.of(
-                userMap.entityToDto(
-                        userRepository.findById(id).get()
-                )
-        );
+    public UserDto getUserById(long id) {
+        return userRepository.findById(id)
+                .map(userMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

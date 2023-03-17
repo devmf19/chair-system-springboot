@@ -1,7 +1,6 @@
 package com.devmf.chairSystem.service.implementation;
 
 import com.devmf.chairSystem.dto.MoneyDto;
-import com.devmf.chairSystem.model.Money;
 import com.devmf.chairSystem.repository.MoneyRepository;
 import com.devmf.chairSystem.service.interfaces.IMoneyService;
 import com.devmf.chairSystem.service.mapping.MoneyMap;
@@ -28,10 +27,9 @@ public class MoneyService implements IMoneyService {
 
     @Override
     public MoneyDto getMoneyById(long id) {
-        Money result = moneyRepository.findById(id).orElse(null);
-        return result == null ?
-                null
-                : moneyMap.entityToDto(result);
+        return moneyRepository.findById(id)
+                .map(moneyMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

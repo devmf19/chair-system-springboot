@@ -1,27 +1,29 @@
 package com.devmf.chairSystem.service.implementation;
 
 import com.devmf.chairSystem.dto.EventDetailDto;
+import com.devmf.chairSystem.dto.EventDto;
 import com.devmf.chairSystem.repository.EventDetailRepository;
 import com.devmf.chairSystem.service.interfaces.IEventDetailService;
 import com.devmf.chairSystem.service.mapping.EventDetailMap;
+import com.devmf.chairSystem.service.mapping.EventMap;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EventDetailService implements IEventDetailService {
 
-    @Autowired
     private EventDetailRepository eventDetailRepository;
 
-    private final EventDetailMap eventDetailMap = new EventDetailMap();
+    private final EventDetailMap eventDetailMap;
+
+    private final EventMap eventMap;
 
     @Override
-    public List<EventDetailDto> getEventDetails() {
+    public List<EventDetailDto> getAllEventDetails() {
         return eventDetailRepository.findAll()
                 .stream()
                 .map(eventDetailMap::entityToDto)
@@ -29,12 +31,19 @@ public class EventDetailService implements IEventDetailService {
     }
 
     @Override
-    public Optional<EventDetailDto> getEventDetailById(long id) {
-        return Optional.of(
-                eventDetailMap.entityToDto(
-                        eventDetailRepository.findById(id).get()
-                )
-        );
+    public EventDetailDto getEventDetailById(long id) {
+        return eventDetailRepository.findById(id)
+                .map(eventDetailMap::entityToDto)
+                .orElse(null);
+    }
+
+    @Override
+    public List<EventDetailDto> findEventDetailByEvent(EventDto eventDto) {
+        return eventDetailRepository.findEventDetailByEvent(eventMap.dtoToEntity(eventDto))
+                .stream()
+                .map(eventDetailMap::entityToDto)
+                .peek(eventDetailDto -> eventDetailDto.setEventDto(null))
+                .collect(Collectors.toList());
     }
 
     @Override

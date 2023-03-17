@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 public class MoneyMap {
 
     public MoneyDto entityToDto(Money money){
+        if(money == null ) {
+            return null;
+        }
         MoneyDto moneyDto = new MoneyDto();
 
         moneyDto.setId(money.getId());
@@ -18,6 +21,9 @@ public class MoneyMap {
     }
 
     public Money dtoToEntity(MoneyDto moneyDto) {
+        if(moneyDto == null ) {
+            return null;
+        }
         Money money = new Money();
 
         money.setId(moneyDto.getId());

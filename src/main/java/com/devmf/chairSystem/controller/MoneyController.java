@@ -29,10 +29,9 @@ public class MoneyController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getMoney(@PathVariable("id") long id) {
         MoneyDto result = moneyService.getMoneyById(id);
-        if(result == null) {
-            return new ResponseEntity<>(new Message("Not found"), HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return result == null ?
+                new ResponseEntity<>(new Message("Not found"), HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("")

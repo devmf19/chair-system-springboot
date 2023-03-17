@@ -5,20 +5,18 @@ import com.devmf.chairSystem.repository.ReceptionRepository;
 import com.devmf.chairSystem.service.interfaces.IReceptionService;
 import com.devmf.chairSystem.service.mapping.ReceptionMap;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ReceptionService implements IReceptionService {
 
-    @Autowired
     private ReceptionRepository receptionRepository;
 
-    private ReceptionMap receptionMap = new ReceptionMap();
+    private ReceptionMap receptionMap;
 
 
     @Override
@@ -30,12 +28,10 @@ public class ReceptionService implements IReceptionService {
     }
 
     @Override
-    public Optional<ReceptionDto> getReceptionById(long id) {
-        return Optional.of(
-                receptionMap.entityToDto(
-                        receptionRepository.findById(id).get()
-                )
-        );
+    public ReceptionDto getReceptionById(long id) {
+        return receptionRepository.findById(id)
+                .map(receptionMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

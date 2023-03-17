@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 public class SettingMap {
 
     public SettingDto entityToDto(Setting setting) {
+        if(setting == null ) {
+            return null;
+        }
         SettingDto settingDto = new SettingDto();
 
         settingDto.setId(setting.getId());
@@ -22,6 +25,9 @@ public class SettingMap {
     }
 
     public Setting dtoToEntity(SettingDto settingDto) {
+        if(settingDto == null ) {
+            return null;
+        }
         Setting setting = new Setting();
 
         setting.setId(settingDto.getId());

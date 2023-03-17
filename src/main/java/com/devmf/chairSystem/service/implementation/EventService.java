@@ -5,20 +5,18 @@ import com.devmf.chairSystem.repository.EventRepository;
 import com.devmf.chairSystem.service.interfaces.IEventService;
 import com.devmf.chairSystem.service.mapping.EventMap;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class EventService implements IEventService {
 
-    @Autowired
     private EventRepository eventRepository;
 
-    private EventMap eventMap = new EventMap();
+    private EventMap eventMap;
 
     @Override
     public List<EventDto> getEvents() {
@@ -29,12 +27,10 @@ public class EventService implements IEventService {
     }
 
     @Override
-    public Optional<EventDto> getEventById(long id) {
-        return Optional.of(
-                eventMap.entityToDto(
-                        eventRepository.findById(id).get()
-                )
-        );
+    public EventDto getEventById(long id) {
+        return eventRepository.findById(id)
+                .map(eventMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

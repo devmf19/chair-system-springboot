@@ -5,20 +5,18 @@ import com.devmf.chairSystem.repository.CustomerRepository;
 import com.devmf.chairSystem.service.interfaces.ICustomerService;
 import com.devmf.chairSystem.service.mapping.CustomerMap;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CustomerService implements ICustomerService {
 
-    @Autowired
     private CustomerRepository customerRepository;
 
-    private final CustomerMap customerMap = new CustomerMap();
+    private final CustomerMap customerMap;
 
     @Override
     public List<CustomerDto> getCustomers() {
@@ -29,12 +27,10 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Optional<CustomerDto> getCustomerById(long id) {
-        return Optional.of(
-                customerMap.entityToDto(
-                    customerRepository.findById(id).get()
-                )
-        );
+    public CustomerDto getCustomerById(long id) {
+        return customerRepository.findById(id)
+                .map(customerMap::entityToDto)
+                .orElse(null);
     }
 
     @Override

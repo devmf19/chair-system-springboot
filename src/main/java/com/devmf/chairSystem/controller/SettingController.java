@@ -33,7 +33,7 @@ public class SettingController {
         if(moneyDto == null){
             return new ResponseEntity<>(new Message("Invalid money id"), HttpStatus.BAD_REQUEST);
         }
-
+        settingDto.setId(1L);
         settingDto.setMoneyDto(moneyDto);
         settingService.updateSetting(settingDto);
 

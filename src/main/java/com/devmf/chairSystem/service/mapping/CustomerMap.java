@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMap {
     public CustomerDto entityToDto(Customer customer) {
+        if(customer == null ) {
+            return null;
+        }
         CustomerDto customerDto = new CustomerDto();
 
         customerDto.setId(customer.getId());
@@ -21,6 +24,9 @@ public class CustomerMap {
     }
 
     public Customer dtoToEntity(CustomerDto customerDto) {
+        if(customerDto == null ) {
+            return null;
+        }
         Customer customer = new Customer();
 
         customer.setId(customerDto.getId());
