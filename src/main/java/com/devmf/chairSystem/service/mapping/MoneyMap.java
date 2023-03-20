@@ -11,11 +11,11 @@ public class MoneyMap {
         if(money == null ) {
             return null;
         }
-        MoneyDto moneyDto = new MoneyDto();
-
-        moneyDto.setId(money.getId());
-        moneyDto.setShortName(money.getShortName());
-        moneyDto.setName(money.getName());
+        MoneyDto moneyDto = new MoneyDto(
+                money.getId(),
+                money.getShortName(),
+                money.getName()
+        );
 
         return moneyDto;
     }
@@ -24,11 +24,11 @@ public class MoneyMap {
         if(moneyDto == null ) {
             return null;
         }
-        Money money = new Money();
-
-        money.setId(moneyDto.getId());
-        money.setShortName(moneyDto.getShortName());
-        money.setName(moneyDto.getName());
+        Money money = new Money(
+                moneyDto.getId(),
+                moneyDto.getShortName(),
+                moneyDto.getName()
+        );
 
         return money;
     }

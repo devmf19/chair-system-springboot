@@ -7,7 +7,9 @@ import com.devmf.chairSystem.service.mapping.ProductMap;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,5 +55,10 @@ public class ProductService implements IProductService {
         productRepository.save(
                 productMap.dtoToEntity(productDto)
         );
+    }
+
+    @Override
+    public List<Map<String, Object>> availableProducts(String initialDate, String endDate) {
+        return productRepository.availableProducts(initialDate, endDate);
     }
 }

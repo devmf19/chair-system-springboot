@@ -1,5 +1,6 @@
 package com.devmf.chairSystem.controller;
 
+import com.devmf.chairSystem.dto.DateRequest;
 import com.devmf.chairSystem.dto.Message;
 import com.devmf.chairSystem.dto.ProductDto;
 import com.devmf.chairSystem.service.implementation.ProductService;
@@ -7,6 +8,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+
 
 @RestController
 @CrossOrigin("*")
@@ -32,11 +36,23 @@ public class ProductController {
                 : new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping("/availables")
+    public ResponseEntity<?> availableProducts(@RequestBody DateRequest dateRequest) {
+        if(Date.valueOf(dateRequest.getInitialDate()).getTime() > Date.valueOf(dateRequest.getEndDate()).getTime()) {
+            return new ResponseEntity<>(new Message("End date can´t be greater than initial date"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(
+                productService.availableProducts(dateRequest.getInitialDate(), dateRequest.getEndDate()),
+                HttpStatus.OK
+        );
+    }
+
     @PostMapping("")
     public ResponseEntity<?> saveProduct(@RequestBody ProductDto productDto) {
         productService.saveProduct(productDto);
         return new ResponseEntity<>(new Message("Saved product"), HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
@@ -58,4 +74,6 @@ public class ProductController {
         productService.deleteProduct(result);
         return new ResponseEntity<>(new Message("Deleted product"), HttpStatus.OK);
     }
+
+
 }

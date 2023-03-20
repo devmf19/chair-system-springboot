@@ -42,8 +42,10 @@ public class EventDetailService implements IEventDetailService {
         return eventDetailRepository.findEventDetailByEvent(eventMap.dtoToEntity(eventDto))
                 .stream()
                 .map(eventDetailMap::entityToDto)
-                .peek(eventDetailDto -> eventDetailDto.setEventDto(null))
                 .collect(Collectors.toList());
+    }
+    public void sillasDiponibles(EventDto eventDto) {
+        List<EventDetailDto> products = findEventDetailByEvent(eventDto);
     }
 
     @Override

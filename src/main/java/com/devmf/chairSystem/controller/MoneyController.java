@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -35,7 +37,7 @@ public class MoneyController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Message> saveMoney(@RequestBody MoneyDto moneyDto) {
+    public ResponseEntity<Message> saveMoney(@Valid @RequestBody MoneyDto moneyDto) {
         moneyService.saveMoney(moneyDto);
         return new ResponseEntity<>(new Message("Created money"), HttpStatus.CREATED);
     }

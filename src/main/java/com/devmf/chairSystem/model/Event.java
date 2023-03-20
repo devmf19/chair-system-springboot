@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -20,15 +21,18 @@ public class Event implements Serializable {
     @Column(name = "days")
     private long days;
     @Column(name = "initial_date")
-    private Timestamp initialDate;
+    private Date initialDate;
     @Column(name = "end_date")
-    private Timestamp endDate;
+    private Date endDate;
     @Column(name  = "state")
     private String state;
     @Column(name = "payment")
     private double payment;
     @Column(name = "observation")
     private String observation;
+
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
     @ManyToOne
     @JoinColumn(name = "id_user")

@@ -20,6 +20,7 @@ public class EventMap {
         eventDto.setPayment(event.getPayment());
         eventDto.setObservation(event.getObservation());
         eventDto.setState(event.getState());
+        eventDto.setCreatedAt(event.getCreatedAt());
         eventDto.setCustomerDto(new CustomerMap().entityToDto(event.getCustomer()));
         eventDto.setUserDto(new UserMap().entityToDto(event.getUser()));
 
@@ -39,6 +40,7 @@ public class EventMap {
         event.setPayment(eventDto.getPayment());
         event.setObservation(eventDto.getObservation());
         event.setState(eventDto.getState());
+        event.setCreatedAt(eventDto.getCreatedAt());
         event.setCustomer(new CustomerMap().dtoToEntity(eventDto.getCustomerDto()));
         event.setUser(new UserMap().dtoToEntity(eventDto.getUserDto()));
 

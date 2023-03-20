@@ -35,6 +35,7 @@ public class EventController {
 
     @PostMapping("")
     public ResponseEntity<?> saveEvent(@RequestBody EventDto eventDto) {
+        eventDto.setState("RESERVADO");
         eventService.saveEvent(eventDto);
         return new ResponseEntity<>(new Message("Created event"), HttpStatus.CREATED);
     }
