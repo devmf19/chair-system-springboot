@@ -27,7 +27,6 @@ public class EventDetailController {
     private final EventDetailService eventDetailService;
     private final EventService eventService;
     private final ProductService productService;
-
     private final SettingService settingService;
 
     @GetMapping("")
