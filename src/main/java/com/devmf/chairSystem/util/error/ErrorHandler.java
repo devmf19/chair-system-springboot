@@ -1,4 +1,4 @@
-package com.devmf.chairSystem.error;
+package com.devmf.chairSystem.util.error;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

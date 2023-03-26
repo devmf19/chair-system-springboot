@@ -16,4 +16,6 @@ public interface ICustomerService {
     void updateCustomer(CustomerDto customerDto);
 
     void deleteCustomer(CustomerDto customerDto);
+
+    boolean existByDui(String dui);
 }

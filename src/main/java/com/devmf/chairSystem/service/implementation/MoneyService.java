@@ -3,7 +3,7 @@ package com.devmf.chairSystem.service.implementation;
 import com.devmf.chairSystem.dto.MoneyDto;
 import com.devmf.chairSystem.repository.MoneyRepository;
 import com.devmf.chairSystem.service.interfaces.IMoneyService;
-import com.devmf.chairSystem.service.mapping.MoneyMap;
+import com.devmf.chairSystem.util.mapper.MoneyMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,41 +15,41 @@ import java.util.stream.Collectors;
 public class MoneyService implements IMoneyService {
 
     private final MoneyRepository moneyRepository;
-    private final MoneyMap moneyMap;
+    private final MoneyMapper moneyMapper;
 
     @Override
     public List<MoneyDto> getMoneys() {
         return moneyRepository.findAll()
                 .stream()
-                .map(moneyMap::entityToDto)
+                .map(moneyMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public MoneyDto getMoneyById(long id) {
         return moneyRepository.findById(id)
-                .map(moneyMap::entityToDto)
+                .map(moneyMapper::entityToDto)
                 .orElse(null);
     }
 
     @Override
     public void saveMoney(MoneyDto moneyDto) {
         moneyRepository.save(
-                moneyMap.dtoToEntity(moneyDto)
+                moneyMapper.dtoToEntity(moneyDto)
         );
     }
 
     @Override
     public void updateMoney(MoneyDto moneyDto) {
         moneyRepository.save(
-                moneyMap.dtoToEntity(moneyDto)
+                moneyMapper.dtoToEntity(moneyDto)
         );
     }
 
     @Override
     public void deleteMoney(MoneyDto moneyDto) {
         moneyRepository.delete(
-                moneyMap.dtoToEntity(moneyDto)
+                moneyMapper.dtoToEntity(moneyDto)
         );
     }
 }

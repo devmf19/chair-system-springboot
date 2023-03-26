@@ -1,17 +1,16 @@
-package com.devmf.chairSystem.service.mapping;
+package com.devmf.chairSystem.util.mapper;
 
 import com.devmf.chairSystem.dto.ProductDto;
 import com.devmf.chairSystem.model.Product;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductMap {
+public class ProductMapper {
     public ProductDto entityToDto(Product product) {
-        if(product == null ) {
+        if(product == null )
             return null;
-        }
-        ProductDto productDto = new ProductDto();
 
+        ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setAmount(product.getAmount());
@@ -21,11 +20,10 @@ public class ProductMap {
     }
 
     public Product dtoToEntity(ProductDto productDto) {
-        if(productDto == null ) {
+        if(productDto == null )
             return null;
-        }
-        Product product = new Product();
 
+        Product product = new Product();
         product.setId(productDto.getId());
         product.setName(productDto.getName());
         product.setAmount(productDto.getAmount());

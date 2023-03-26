@@ -1,6 +1,6 @@
-package com.devmf.chairSystem.service.interfaces;
+package com.devmf.chairSystem.security.service.interfaces;
 
-import com.devmf.chairSystem.dto.UserDto;
+import com.devmf.chairSystem.security.dto.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -16,4 +16,10 @@ public interface IUserService {
     void updateUser(UserDto userDto);
 
     void deleteUser(UserDto userDto);
+
+    boolean validateUser(UserDto userDto);
+
+    boolean existByUsername(String username);
+
+    boolean existByDui(String dui);
 }

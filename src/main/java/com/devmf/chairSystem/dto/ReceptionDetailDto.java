@@ -2,16 +2,24 @@ package com.devmf.chairSystem.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
-@Getter @Setter
-public class MoneyDto {
+@Getter
+@Setter
+@NoArgsConstructor
+public class ReceptionDetailDto {
     private long id;
+
     @NotBlank
-    private String shortName;
+    private long amount;
+
     @NotBlank
-    private String name;
+    private EventDetailDto eventDetailDto;
+
+    @NotBlank
+    private ReceptionDto receptionDto;
 }

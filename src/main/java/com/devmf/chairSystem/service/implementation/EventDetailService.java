@@ -4,8 +4,8 @@ import com.devmf.chairSystem.dto.EventDetailDto;
 import com.devmf.chairSystem.dto.EventDto;
 import com.devmf.chairSystem.repository.EventDetailRepository;
 import com.devmf.chairSystem.service.interfaces.IEventDetailService;
-import com.devmf.chairSystem.service.mapping.EventDetailMap;
-import com.devmf.chairSystem.service.mapping.EventMap;
+import com.devmf.chairSystem.util.mapper.EventDetailMapper;
+import com.devmf.chairSystem.util.mapper.EventMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,55 +17,50 @@ import java.util.stream.Collectors;
 public class EventDetailService implements IEventDetailService {
 
     private EventDetailRepository eventDetailRepository;
-
-    private final EventDetailMap eventDetailMap;
-
-    private final EventMap eventMap;
+    private final EventDetailMapper eventDetailMapper;
+    private final EventMapper eventMapper;
 
     @Override
     public List<EventDetailDto> getAllEventDetails() {
         return eventDetailRepository.findAll()
                 .stream()
-                .map(eventDetailMap::entityToDto)
+                .map(eventDetailMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public EventDetailDto getEventDetailById(long id) {
         return eventDetailRepository.findById(id)
-                .map(eventDetailMap::entityToDto)
+                .map(eventDetailMapper::entityToDto)
                 .orElse(null);
     }
 
     @Override
     public List<EventDetailDto> findEventDetailByEvent(EventDto eventDto) {
-        return eventDetailRepository.findEventDetailByEvent(eventMap.dtoToEntity(eventDto))
+        return eventDetailRepository.findAllByEvent(eventMapper.dtoToEntity(eventDto))
                 .stream()
-                .map(eventDetailMap::entityToDto)
+                .map(eventDetailMapper::entityToDto)
                 .collect(Collectors.toList());
-    }
-    public void sillasDiponibles(EventDto eventDto) {
-        List<EventDetailDto> products = findEventDetailByEvent(eventDto);
     }
 
     @Override
     public void saveEventDetail(EventDetailDto eventDetailDto) {
         eventDetailRepository.save(
-                eventDetailMap.dtoToEntity(eventDetailDto)
+                eventDetailMapper.dtoToEntity(eventDetailDto)
         );
     }
 
     @Override
     public void updateEventDetail(EventDetailDto eventDetailDto) {
         eventDetailRepository.save(
-                eventDetailMap.dtoToEntity(eventDetailDto)
+                eventDetailMapper.dtoToEntity(eventDetailDto)
         );
     }
 
     @Override
     public void deleteEventDetail(EventDetailDto eventDetailDto) {
         eventDetailRepository.delete(
-                eventDetailMap.dtoToEntity(eventDetailDto)
+                eventDetailMapper.dtoToEntity(eventDetailDto)
         );
     }
 }

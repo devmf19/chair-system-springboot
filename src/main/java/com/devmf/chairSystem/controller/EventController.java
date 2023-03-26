@@ -27,10 +27,10 @@ public class EventController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getEvent(@PathVariable("id") long id) {
         EventDto result = eventService.getEventById(id);
-        return result == null ?
-                new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(result, HttpStatus.CREATED);
-
+        if (eventService.validateEvent(result)) {
+            return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @PostMapping("")
@@ -43,7 +43,7 @@ public class EventController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEvent(@PathVariable("id") long id, @RequestBody EventDto eventDto) {
         EventDto result = eventService.getEventById(id);
-        if (result == null) {
+        if (eventService.validateEvent(result)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
         eventDto.setId(result.getId());
@@ -54,7 +54,7 @@ public class EventController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> updateEvent(@PathVariable("id") long id) {
         EventDto result = eventService.getEventById(id);
-        if (result == null) {
+        if (eventService.validateEvent(result)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
         result.setState("CANCELADO");

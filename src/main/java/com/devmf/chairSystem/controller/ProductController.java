@@ -31,9 +31,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable("id") long id) {
         ProductDto result = productService.getProductById(id);
-        return result == null ?
-                new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(result, HttpStatus.OK);
+        if(productService.validateProduct(result)){
+            return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/availables")
@@ -57,7 +58,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
         ProductDto result = productService.getProductById(id);
-        if(result == null) {
+        if(productService.validateProduct(result)){
             return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
         }
         productDto.setId(result.getId());
@@ -68,7 +69,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") long id) {
         ProductDto result = productService.getProductById(id);
-        if(result == null) {
+        if(productService.validateProduct(result)){
             return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
         }
         productService.deleteProduct(result);

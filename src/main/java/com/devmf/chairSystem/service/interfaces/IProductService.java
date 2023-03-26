@@ -21,4 +21,7 @@ public interface IProductService {
     void deleteProduct(ProductDto productDto);
 
     List<Map<String, Object>> availableProducts(String initialDate, String endDate);
+
+    boolean validateProduct(ProductDto productDto);
+
 }

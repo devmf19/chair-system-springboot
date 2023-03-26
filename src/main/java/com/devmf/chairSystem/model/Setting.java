@@ -17,6 +17,8 @@ public class Setting implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+
     @Column(name = "nit")
     private String nit;
     @Column(name = "name")
@@ -28,6 +30,6 @@ public class Setting implements Serializable {
     @Column(name="adreess")
     private String adreess;
     @ManyToOne()
-    @JoinColumn(name = "id_money")
+    @JoinColumn(name = "money_id")
     private Money money;
 }

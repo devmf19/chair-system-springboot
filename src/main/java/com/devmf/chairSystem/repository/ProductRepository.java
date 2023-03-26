@@ -21,16 +21,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         "product p " +
                         "LEFT JOIN (" +
                             "SELECT " +
-                                "ed.id_product, " +
+                                "ed.product_id, " +
                                 "SUM(ed.amount) AS reserved_amount " +
                             "FROM " +
-                                "event_detail ed JOIN event e ON ed.id_event = e.id " +
+                                "event_detail ed JOIN event e ON ed.event_id = e.id " +
                             "WHERE " +
                                 "e.state <> 'CANCELADO' " +
                                 "AND (e.initial_date BETWEEN :initialDate AND :endDate or e.end_date BETWEEN :initialDate AND :endDate) " +
                             "GROUP BY " +
-                                "ed.id_product" +
-                        ") r ON p.id = r.id_product",
+                                "ed.product_id" +
+                        ") r ON p.id = r.product_id",
             nativeQuery = true
     )
     List<Map<String, Object>> availableProducts(@Param("initialDate") String initialDate, @Param("endDate") String endDate);

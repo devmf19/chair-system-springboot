@@ -16,7 +16,6 @@ public interface IEventDetailService {
 
     List<EventDetailDto> findEventDetailByEvent(EventDto eventDto);
 
-
     void saveEventDetail(EventDetailDto eventDetailDto);
 
     void updateEventDetail(EventDetailDto eventDetailDto);

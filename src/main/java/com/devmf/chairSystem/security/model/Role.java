@@ -1,31 +1,25 @@
-package com.devmf.chairSystem.model;
+package com.devmf.chairSystem.security.model;
 
+import com.devmf.chairSystem.security.enums.RoleName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import com.sun.istack.NotNull;
 import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "money")
+@Table(name = "role")
 @Getter @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class Money implements Serializable {
+public class Role implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @Column(name = "short_name")
     @NotNull
-    private String shortName;
+    @Enumerated(EnumType.STRING)
+    private RoleName roleName;
 
-    @Column(name = "name")
-    @NotNull
-    private String name;
 }

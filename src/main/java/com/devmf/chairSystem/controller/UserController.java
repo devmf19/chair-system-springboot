@@ -1,8 +1,8 @@
 package com.devmf.chairSystem.controller;
 
 import com.devmf.chairSystem.dto.Message;
-import com.devmf.chairSystem.dto.UserDto;
-import com.devmf.chairSystem.service.implementation.UserService;
+import com.devmf.chairSystem.security.dto.UserDto;
+import com.devmf.chairSystem.security.service.implementation.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +20,17 @@ public class UserController {
     public ResponseEntity<?> usersList(){
         return new ResponseEntity<>(
                 userService.getUsers(),
-                HttpStatus.OK);
+                HttpStatus.OK
+        );
     }
 
     @GetMapping("{id}")
     public ResponseEntity<?> getUser(@PathVariable("id") long id) {
         UserDto result = userService.getUserById(id);
-        return result == null ?
-                new ResponseEntity<>(new Message("Not found user"), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(result, HttpStatus.OK);
+        if(userService.validateUser(result)) {
+            new ResponseEntity<>(new Message("Not found user"), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -40,7 +42,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody UserDto userDto) {
         UserDto result = userService.getUserById(id);
-        if (result == null){
+        if (userService.validateUser(result)){
             return new ResponseEntity<>(new Message("Not found user"), HttpStatus.BAD_REQUEST);
         }
         userDto.setId(result.getId());

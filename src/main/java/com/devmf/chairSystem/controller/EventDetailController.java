@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api/eventDetails")
+@RequestMapping("/api/event/detail")
 @AllArgsConstructor
 public class EventDetailController {
 
@@ -40,16 +40,27 @@ public class EventDetailController {
     @GetMapping("/event/{eventId}")
     public ResponseEntity<?> getByEvent(@PathVariable("eventId") long eventId) {
         EventDto event = eventService.getEventById(eventId);
-        if(event == null) {
+        if(eventService.validateEvent(event)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
 
-        List<EventDetailDto> eventDetails = eventDetailService.findEventDetailByEvent(event);
-        eventDetails.stream().peek(e -> e.setEventDto(null));
+        List<EventDetailDto> eventDetails = eventDetailService.findEventDetailByEvent(event)
+                .stream()
+                .peek(e -> e.setEventDto(null))
+                .collect(Collectors.toList());
+
+
+        double total = eventDetails
+                .stream()
+                .map(ed -> ed.getAmount() * ed.getPrice())
+                .toList()
+                .stream().mapToDouble(Double::doubleValue).sum();
 
         HashMap<String, Object> response = new HashMap<>();
-        response.put("Event", event);
-        response.put("Products", eventDetails);
+        response.put("event", event);
+        response.put("products", eventDetails);
+        response.put("total", total);
+        response.put("unpaidBalance", (total - event.getPayment()));
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -64,12 +75,12 @@ public class EventDetailController {
         }
 
         EventDto event = eventService.getEventById(eventDetailDto.getEventDto().getId());
-        if(event == null) {
+        if(eventService.validateEvent(event)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
 
         ProductDto product = productService.getProductById(eventDetailDto.getProductDto().getId());
-        if(product == null) {
+        if(productService.validateProduct(product)) {
             return new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
         }
 
@@ -99,7 +110,7 @@ public class EventDetailController {
     @PutMapping("/event/{eventId}/detail/{detailId}")
     public ResponseEntity<?> updateDetail(@PathVariable("eventId") long eventId, @PathVariable("detailId") long detailId, @RequestBody EventDetailDto eventDetailDto) {
         EventDto event = eventService.getEventById(eventId);
-        if(event == null) {
+        if(eventService.validateEvent(event)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
 
@@ -121,7 +132,7 @@ public class EventDetailController {
     @DeleteMapping("/event/{eventId}/detail/{detailId}")
     public ResponseEntity<?> deleteDetail(@PathVariable("eventId") long eventId, @PathVariable("detailId") long detailId) {
         EventDto event = eventService.getEventById(eventId);
-        if(event == null) {
+        if(eventService.validateEvent(event)) {
             return new ResponseEntity<>(new Message("Not found event"), HttpStatus.NOT_FOUND);
         }
 

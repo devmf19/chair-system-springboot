@@ -1,4 +1,4 @@
-package com.devmf.chairSystem.error;
+package com.devmf.chairSystem.util.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

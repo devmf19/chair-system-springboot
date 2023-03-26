@@ -3,7 +3,7 @@ package com.devmf.chairSystem.service.implementation;
 import com.devmf.chairSystem.dto.SettingDto;
 import com.devmf.chairSystem.repository.SettingRepository;
 import com.devmf.chairSystem.service.interfaces.ISettingService;
-import com.devmf.chairSystem.service.mapping.SettingMap;
+import com.devmf.chairSystem.util.mapper.SettingMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +14,11 @@ public class SettingService implements ISettingService {
 
     private SettingRepository settingRepository;
 
-    private SettingMap settingMap;
+    private SettingMapper settingMapper;
 
     @Override
     public SettingDto getSetting() {
-        return settingMap.entityToDto(
+        return settingMapper.entityToDto(
                 settingRepository.findAll().get(0)
         );
     }
@@ -26,7 +26,7 @@ public class SettingService implements ISettingService {
     @Override
     public void updateSetting(SettingDto settingDto) {
         settingRepository.save(
-                settingMap.dtoToEntity(settingDto)
+                settingMapper.dtoToEntity(settingDto)
         );
     }
 }
