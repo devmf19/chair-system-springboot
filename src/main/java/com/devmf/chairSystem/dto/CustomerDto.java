@@ -11,8 +11,6 @@ import javax.validation.constraints.NotBlank;
 @Getter @Setter
 @NoArgsConstructor
 public class CustomerDto {
-    private long id;
-
     @NotBlank
     private String dui;
 
@@ -30,5 +28,6 @@ public class CustomerDto {
 
     private String email;
 
-    private double balance;
+    private AccountDto account;
+
 }

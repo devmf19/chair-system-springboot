@@ -29,12 +29,12 @@ public class SettingController {
 
     @PutMapping("")
     public ResponseEntity<?> updateSetting(@RequestBody SettingDto settingDto){
-        MoneyDto moneyDto = moneyService.getMoneyById(settingDto.getMoneyDto().getId());
+        MoneyDto moneyDto = moneyService.getMoneyById(settingDto.getMoney().getId());
         if(moneyDto == null){
             return new ResponseEntity<>(new Message("Invalid money id"), HttpStatus.BAD_REQUEST);
         }
         settingDto.setId(1L);
-        settingDto.setMoneyDto(moneyDto);
+        settingDto.setMoney(moneyDto);
         settingService.updateSetting(settingDto);
 
         return new ResponseEntity<>(new Message("Updated setting"), HttpStatus.OK);

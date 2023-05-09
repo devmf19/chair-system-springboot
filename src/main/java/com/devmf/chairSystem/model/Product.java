@@ -1,13 +1,17 @@
 package com.devmf.chairSystem.model;
 
 import com.sun.istack.NotNull;
-import jakarta.persistence.*;
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "product")
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
     private static final long serialVersionUID = 1L;
 
@@ -26,5 +30,7 @@ public class Product {
     @Column(name = "stock")
     private long stock;
 
-
+    public Product(long id) {
+        this.id = id;
+    }
 }

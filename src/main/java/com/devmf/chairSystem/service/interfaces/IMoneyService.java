@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public interface IMoneyService {
-    List<MoneyDto> getMoneys();
+    List<MoneyDto> getAllMoneys();
 
     MoneyDto getMoneyById(long id);
 

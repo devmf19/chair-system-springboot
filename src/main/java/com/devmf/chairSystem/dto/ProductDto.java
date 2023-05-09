@@ -18,5 +18,6 @@ public class ProductDto {
 
     @NotBlank
     private long amount;
+
     private long stock;
 }

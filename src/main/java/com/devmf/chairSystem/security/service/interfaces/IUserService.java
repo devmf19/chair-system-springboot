@@ -1,13 +1,14 @@
 package com.devmf.chairSystem.security.service.interfaces;
 
 import com.devmf.chairSystem.security.dto.UserDto;
+import com.devmf.chairSystem.security.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public interface IUserService {
-    List<UserDto> getUsers();
+    List<UserDto> getAllUsers();
 
     UserDto getUserById(long id);
 
@@ -19,7 +20,7 @@ public interface IUserService {
 
     boolean validateUser(UserDto userDto);
 
-    boolean existByUsername(String username);
+    User getByDui(String dui);
 
-    boolean existByDui(String dui);
+    User getByUsername(String username);
 }

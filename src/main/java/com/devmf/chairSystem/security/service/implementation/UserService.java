@@ -1,30 +1,33 @@
 package com.devmf.chairSystem.security.service.implementation;
 
 import com.devmf.chairSystem.security.dto.UserDto;
+import com.devmf.chairSystem.security.enums.RoleName;
+import com.devmf.chairSystem.security.model.Role;
+import com.devmf.chairSystem.security.model.User;
 import com.devmf.chairSystem.security.repository.UserRepository;
 import com.devmf.chairSystem.security.service.interfaces.IUserService;
 import com.devmf.chairSystem.util.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserService implements IUserService {
-
     private final UserRepository userRepository;
-
+    private final RoleService roleService;
     private final UserMapper userMapper;
 
 
     @Override
-    public List<UserDto> getUsers() {
+    public List<UserDto> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::entityToDto)
-                .peek(u -> u.setPassword(""))
                 .collect(Collectors.toList());
     }
 
@@ -32,18 +35,22 @@ public class UserService implements IUserService {
     public UserDto getUserById(long id) {
         return userRepository.findById(id)
                 .map(userMapper::entityToDto)
-                .map(u -> {
-                    u.setPassword("");
-                    return u;
-                })
                 .orElse(null);
     }
 
     @Override
     public void saveUser(UserDto userDto) {
-        userRepository.save(
-                userMapper.dtoToEntity(userDto)
-        );
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getByRoleName(RoleName.ROLE_USER));
+
+        if(userDto.getRoles().contains("admin"))
+            roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN));
+
+        User user = userMapper.dtoToEntity(userDto);
+        user.setRoles(roles);
+
+        userRepository.save(user);
+
     }
 
     @Override
@@ -66,12 +73,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean existByUsername(String username) {
-        return userRepository.existByUsername(username);
+    public User getByDui(String dui) {
+        return userRepository.findByDui(dui);
     }
 
     @Override
-    public boolean existByDui(String dui) {
-        return userRepository.existByDui(dui);
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
+
 }

@@ -2,34 +2,35 @@ package com.devmf.chairSystem.util.mapper;
 
 import com.devmf.chairSystem.dto.ReceptionDetailDto;
 import com.devmf.chairSystem.model.ReceptionDetail;
+import com.devmf.chairSystem.service.implementation.ReceptionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReceptionDetailMapper {
+    @Autowired
+    private ReceptionService receptionService;
+    private final EventDetailMapper eventDetailMapper = new EventDetailMapper();
 
     public ReceptionDetailDto entityToDto(ReceptionDetail receptionDetail) {
-        if(receptionDetail == null)
-            return null;
-
-        ReceptionDetailDto receptionDetailDto = new ReceptionDetailDto();
-        receptionDetailDto.setId(receptionDetail.getId());
-        receptionDetailDto.setAmount(receptionDetail.getAmount());
-        receptionDetailDto.setEventDetailDto(new EventDetailMapper().entityToDto(receptionDetail.getEventDetail()));
-        receptionDetailDto.setReceptionDto(new ReceptionMapper().entityToDto(receptionDetail.getReception()));
-
-        return receptionDetailDto;
+        return receptionDetail == null
+                ? null
+                : new ReceptionDetailDto(
+                receptionDetail.getId(),
+                receptionDetail.getAmount(),
+                receptionDetail.getReception().getId(),
+                eventDetailMapper.entityToDto(receptionDetail.getEventDetail())
+        );
     }
 
     public ReceptionDetail dtoToEntity(ReceptionDetailDto receptionDetailDto) {
-        if(receptionDetailDto == null)
-            return null;
-
-        ReceptionDetail receptionDetail = new ReceptionDetail();
-        receptionDetail.setId(receptionDetailDto.getId());
-        receptionDetail.setAmount(receptionDetailDto.getAmount());
-        receptionDetail.setEventDetail(new EventDetailMapper().dtoToEntity(receptionDetailDto.getEventDetailDto()));
-        receptionDetail.setReception(new ReceptionMapper().dtoToEntity(receptionDetailDto.getReceptionDto()));
-
-        return receptionDetail;
+        return receptionDetailDto == null
+                ? null
+                : new ReceptionDetail(
+                receptionDetailDto.getId(),
+                receptionDetailDto.getAmount(),
+                eventDetailMapper.dtoToEntity(receptionDetailDto.getEventDetail()),
+                receptionService.getReceptionById(receptionDetailDto.getReceptionId())
+        );
     }
 }

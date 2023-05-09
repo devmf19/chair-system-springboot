@@ -13,8 +13,6 @@ import java.util.Set;
 @Getter @Setter
 @NoArgsConstructor
 public class UserDto {
-    private long id;
-
     @NotBlank
     private String dui;
 

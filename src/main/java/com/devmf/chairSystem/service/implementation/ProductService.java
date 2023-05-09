@@ -14,14 +14,11 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ProductService implements IProductService {
-
     private ProductRepository productRepository;
-
     private ProductMapper productMapper;
 
-
     @Override
-    public List<ProductDto> getProducts() {
+    public List<ProductDto> getAllProducts() {
         return productRepository.findAll()
                 .stream()
                 .map(productMapper::entityToDto)
@@ -33,6 +30,11 @@ public class ProductService implements IProductService {
         return productRepository.findById(id)
                 .map(productMapper::entityToDto)
                 .orElse(null);
+    }
+
+    @Override
+    public List<Map<String, Object>> availableProducts(String initialDate, String endDate) {
+        return productRepository.availableProducts(initialDate, endDate);
     }
 
     @Override
@@ -54,11 +56,6 @@ public class ProductService implements IProductService {
         productRepository.save(
                 productMapper.dtoToEntity(productDto)
         );
-    }
-
-    @Override
-    public List<Map<String, Object>> availableProducts(String initialDate, String endDate) {
-        return productRepository.availableProducts(initialDate, endDate);
     }
 
     @Override

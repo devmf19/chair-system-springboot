@@ -1,6 +1,7 @@
 package com.devmf.chairSystem.service.interfaces;
 
 import com.devmf.chairSystem.dto.CustomerDto;
+import com.devmf.chairSystem.model.Customer;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,13 +10,12 @@ import java.util.List;
 public interface ICustomerService {
     List<CustomerDto> getCustomers();
 
-    CustomerDto getCustomerById(long id);
+    Customer getCustomerByDui(String dui);
 
     void saveCustomer(CustomerDto customerDto);
 
-    void updateCustomer(CustomerDto customerDto);
+    void updateCustomer(String dui, CustomerDto customerDto);
 
-    void deleteCustomer(CustomerDto customerDto);
+    void deleteCustomer(String dui);
 
-    boolean existByDui(String dui);
 }

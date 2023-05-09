@@ -15,7 +15,7 @@ public class RoleService implements IRole {
     private final RoleRepository roleRepository;
 
     @Override
-    public Optional<Role> getByRoleName(RoleName roleName) {
+    public Role getByRoleName(RoleName roleName) {
         return roleRepository.findByRoleName(roleName);
     }
 

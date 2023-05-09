@@ -3,7 +3,6 @@ package com.devmf.chairSystem.controller;
 import com.devmf.chairSystem.dto.DateRequest;
 import com.devmf.chairSystem.dto.EventDto;
 import com.devmf.chairSystem.dto.Message;
-import com.devmf.chairSystem.service.implementation.EventDetailService;
 import com.devmf.chairSystem.service.implementation.EventService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ReportsController {
     private final EventService eventService;
-    private final EventDetailService eventDetailService;
 
     @PostMapping("/events")
     public ResponseEntity<?> getEventsBetween(@RequestBody DateRequest dateRequest) {
@@ -36,16 +35,16 @@ public class ReportsController {
                 Date.valueOf(dateRequest.getEndDate())
         );
         double earnings = events.stream()
-                .filter(event -> event.getResolved() == 1)
-                .map(event -> eventDetailService.findEventDetailByEvent(event)
+                .filter(event -> event.getState().equalsIgnoreCase("RECIBIDO"))
+                .map(event -> event.getEventDetails()
                                 .stream()
                                 .map(ed -> ed.getAmount() * ed.getPrice())
-                                .toList()
+                                .collect(Collectors.toList())
                                 .stream()
                                 .mapToDouble(Double::doubleValue)
                                 .sum()
                 )
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .mapToDouble(Double::doubleValue)
                 .sum();

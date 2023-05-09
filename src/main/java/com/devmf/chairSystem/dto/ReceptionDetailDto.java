@@ -18,8 +18,8 @@ public class ReceptionDetailDto {
     private long amount;
 
     @NotBlank
-    private EventDetailDto eventDetailDto;
+    private long receptionId;
 
     @NotBlank
-    private ReceptionDto receptionDto;
+    private EventDetailDto eventDetail;
 }

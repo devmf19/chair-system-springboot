@@ -1,11 +1,11 @@
 package com.devmf.chairSystem.security.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import com.sun.istack.NotNull;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,8 +13,8 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @Getter @Setter
+@NoArgsConstructor
 public class User implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,4 +49,13 @@ public class User implements Serializable {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    public User(String dui, String name, String lastname, String username, String password, String phone) {
+        this.dui = dui;
+        this.name = name;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.phone = phone;
+    }
 }

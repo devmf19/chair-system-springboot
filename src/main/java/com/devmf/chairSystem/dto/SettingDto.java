@@ -15,5 +15,5 @@ public class SettingDto {
     private String phone;
     private String email;
     private String address;
-    private MoneyDto moneyDto;
+    private MoneyDto money;
 }

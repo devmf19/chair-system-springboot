@@ -1,48 +1,64 @@
 package com.devmf.chairSystem.util.mapper;
 
+import com.devmf.chairSystem.dto.EventDetailDto;
 import com.devmf.chairSystem.dto.EventDto;
 import com.devmf.chairSystem.model.Event;
+import com.devmf.chairSystem.model.EventDetail;
+import com.devmf.chairSystem.security.service.implementation.UserService;
+import com.devmf.chairSystem.service.implementation.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EventMapper {
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CustomerService customerService;
+    private final UserMapper userMapper = new UserMapper();
+    private final CustomerMapper customerMapper = new CustomerMapper();
+    private final EventDetailMapper eventDetailMapper = new EventDetailMapper();
 
     public EventDto entityToDto(Event event) {
-        if(event == null )
-            return null;
-
-        EventDto eventDto = new EventDto();
-        eventDto.setId(event.getId());
-        eventDto.setInitialDate(event.getInitialDate());
-        eventDto.setEndDate(event.getEndDate());
-        eventDto.setPayment(event.getPayment());
-        eventDto.setObservation(event.getObservation());
-        eventDto.setResolved(event.getResolved());
-        eventDto.setState(event.getState());
-        eventDto.setCreatedAt(event.getCreatedAt());
-        eventDto.setCustomerDto(new CustomerMapper().entityToDto(event.getCustomer()));
-        eventDto.setUserDto(new UserMapper().entityToDto(event.getUser()));
-
-        return eventDto;
+        return event == null
+            ? null
+            : new EventDto(
+                event.getId(),
+                event.getName(),
+                event.getInitialDate(),
+                event.getEndDate(),
+                event.getState(),
+                event.getObservation(),
+                event.getCreatedAt(),
+                userMapper.entityToDto(event.getUser()),
+                customerMapper.entityToDto(event.getCustomer()),
+                entityToDtoList(event.getEventDetails())
+            );
     }
 
     public Event dtoToEntity(EventDto eventDto) {
-        if(eventDto == null )
-            return null;
+        return eventDto == null
+                ? null
+                : new Event(
+                eventDto.getId(),
+                eventDto.getName(),
+                eventDto.getInitialDate(),
+                eventDto.getEndDate(),
+                eventDto.getState(),
+                eventDto.getObservation(),
+                userService.getByDui(eventDto.getUser().getDui()),
+                customerService.getCustomerByDui(eventDto.getCustomer().getDui())
+        );
+    }
 
-        Event event = new Event();
-        event.setId(eventDto.getId());
-        event.setInitialDate(eventDto.getInitialDate());
-        event.setEndDate(eventDto.getEndDate());
-        event.setPayment(eventDto.getPayment());
-        event.setObservation(eventDto.getObservation());
-        event.setResolved(eventDto.getResolved());
-        event.setState(eventDto.getState());
-        event.setCreatedAt(eventDto.getCreatedAt());
-        event.setCustomer(new CustomerMapper().dtoToEntity(eventDto.getCustomerDto()));
-        event.setUser(new UserMapper().dtoToEntity(eventDto.getUserDto()));
-
-        return event;
+    private List<EventDetailDto> entityToDtoList(List<EventDetail> eventDetails) {
+        return eventDetails
+                .stream()
+                .map(eventDetailMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
 }

@@ -2,35 +2,37 @@ package com.devmf.chairSystem.util.mapper;
 
 import com.devmf.chairSystem.dto.EventDetailDto;
 import com.devmf.chairSystem.model.EventDetail;
+import com.devmf.chairSystem.service.implementation.EventService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EventDetailMapper {
-    public EventDetailDto entityToDto(EventDetail eventDetail){
-        if(eventDetail == null )
-            return null;
+    private final ProductMapper productMapper = new ProductMapper();
+    @Autowired
+    private EventService eventService;
 
-        EventDetailDto eventDetailDto = new EventDetailDto();
-        eventDetailDto.setId(eventDetail.getId());
-        eventDetailDto.setAmount(eventDetail.getAmount());
-        eventDetailDto.setPrice(eventDetail.getPrice());
-        eventDetailDto.setProductDto(new ProductMapper().entityToDto(eventDetail.getProduct()));
-        eventDetailDto.setEventDto(new EventMapper().entityToDto(eventDetail.getEvent()));
-
-        return  eventDetailDto;
+    public EventDetailDto entityToDto(EventDetail eventDetail) {
+        return eventDetail == null
+                ? null
+                : new EventDetailDto(
+                eventDetail.getId(),
+                eventDetail.getAmount(),
+                eventDetail.getPrice(),
+                eventDetail.getEvent().getId(),
+                productMapper.entityToDto(eventDetail.getProduct())
+        );
     }
 
-    public EventDetail dtoToEntity(EventDetailDto eventDetailDto){
-        if(eventDetailDto == null )
-            return null;
-
-        EventDetail eventDetail = new EventDetail();
-        eventDetail.setId(eventDetailDto.getId());
-        eventDetail.setAmount(eventDetailDto.getAmount());
-        eventDetail.setPrice(eventDetailDto.getPrice());
-        eventDetail.setProduct(new ProductMapper().dtoToEntity(eventDetailDto.getProductDto()));
-        eventDetail.setEvent(new EventMapper().dtoToEntity(eventDetailDto.getEventDto()));
-
-        return  eventDetail;
+    public EventDetail dtoToEntity(EventDetailDto eventDetailDto) {
+        return eventDetailDto == null
+                ? null
+                : new EventDetail(
+                eventDetailDto.getId(),
+                eventDetailDto.getAmount(),
+                eventDetailDto.getPrice(),
+                eventService.getEventById(eventDetailDto.getEventId()),
+                productMapper.dtoToEntity(eventDetailDto.getProduct())
+        );
     }
 }

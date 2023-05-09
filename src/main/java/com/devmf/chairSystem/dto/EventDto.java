@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @AllArgsConstructor
 @Getter @Setter
@@ -17,26 +18,25 @@ public class EventDto {
     private long id;
 
     @NotBlank
+    private String name;
+
+    @NotBlank
     private Date initialDate;
 
     @NotBlank
     private Date endDate;
 
-    @NotBlank
     private String state;
 
-    private double payment;
-
-    @NotBlank
     private String observation;
-
-    private int resolved;
 
     private Timestamp createdAt;
 
     @NotBlank
-    private UserDto userDto;
+    private UserDto user;
 
     @NotBlank
-    private CustomerDto customerDto;
+    private CustomerDto customer;
+
+    private List<EventDetailDto> eventDetails;
 }

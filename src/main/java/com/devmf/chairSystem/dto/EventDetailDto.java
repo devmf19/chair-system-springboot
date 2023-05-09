@@ -20,8 +20,8 @@ public class EventDetailDto {
     private double price;
 
     @NotBlank
-    private EventDto eventDto;
+    private long eventId;
 
     @NotBlank
-    private ProductDto productDto;
+    private ProductDto product;
 }

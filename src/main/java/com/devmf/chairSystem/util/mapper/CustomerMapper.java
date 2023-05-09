@@ -2,42 +2,43 @@ package com.devmf.chairSystem.util.mapper;
 
 import com.devmf.chairSystem.dto.CustomerDto;
 import com.devmf.chairSystem.model.Customer;
+import com.devmf.chairSystem.service.implementation.AccountService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CustomerMapper {
+    @Autowired
+    private AccountService accountService;
+    private final AccountMapper accountMapper = new AccountMapper();
+
     public CustomerDto entityToDto(Customer customer) {
-        if(customer == null )
-            return null;
-
-        CustomerDto customerDto = new CustomerDto();
-        customerDto.setId(customer.getId());
-        customerDto.setDui(customer.getDui());
-        customerDto.setName(customer.getName());
-        customerDto.setLastname(customer.getLastname());
-        customerDto.setPhone(customer.getPhone());
-        customerDto.setAddress(customer.getAddress());
-        customerDto.setEmail(customer.getEmail());
-        customerDto.setBalance(customer.getBalance());
-
-        return customerDto;
+        return customer == null
+                ? null
+                : new CustomerDto(
+                customer.getDui(),
+                customer.getName(),
+                customer.getLastname(),
+                customer.getPhone(),
+                customer.getAddress(),
+                customer.getEmail(),
+                accountMapper.entityToDto(customer.getAccount())
+        );
     }
 
     public Customer dtoToEntity(CustomerDto customerDto) {
-        if(customerDto == null )
-            return null;
-
-        Customer customer = new Customer();
-
-        customer.setId(customerDto.getId());
-        customer.setDui(customerDto.getDui());
-        customer.setName(customerDto.getName());
-        customer.setLastname(customerDto.getLastname());
-        customer.setPhone(customerDto.getPhone());
-        customer.setAddress(customerDto.getAddress());
-        customer.setEmail(customerDto.getEmail());
-        customer.setBalance(customerDto.getBalance());
-
-        return customer;
+        return customerDto == null
+                ? null
+                : new Customer(
+                customerDto.getDui(),
+                customerDto.getName(),
+                customerDto.getLastname(),
+                customerDto.getPhone(),
+                customerDto.getAddress(),
+                customerDto.getEmail(),
+                accountService.getAccountByNumber(customerDto.getDui())
+        );
     }
 }

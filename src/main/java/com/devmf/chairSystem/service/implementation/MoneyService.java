@@ -13,12 +13,11 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class MoneyService implements IMoneyService {
-
     private final MoneyRepository moneyRepository;
     private final MoneyMapper moneyMapper;
 
     @Override
-    public List<MoneyDto> getMoneys() {
+    public List<MoneyDto> getAllMoneys() {
         return moneyRepository.findAll()
                 .stream()
                 .map(moneyMapper::entityToDto)

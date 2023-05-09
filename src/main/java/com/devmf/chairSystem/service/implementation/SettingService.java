@@ -7,13 +7,10 @@ import com.devmf.chairSystem.util.mapper.SettingMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @AllArgsConstructor
 public class SettingService implements ISettingService {
-
     private SettingRepository settingRepository;
-
     private SettingMapper settingMapper;
 
     @Override

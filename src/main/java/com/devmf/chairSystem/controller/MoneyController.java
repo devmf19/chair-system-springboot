@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -23,7 +22,7 @@ public class MoneyController {
     @GetMapping("")
     public ResponseEntity<List<MoneyDto>> moneyList() {
         return new ResponseEntity<>(
-                moneyService.getMoneys(),
+                moneyService.getAllMoneys(),
                 HttpStatus.OK
         );
     }
@@ -45,14 +44,11 @@ public class MoneyController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateMoney(@PathVariable("id") long id, @RequestBody MoneyDto moneyDto) {
         MoneyDto result = moneyService.getMoneyById(id);
-
-        if(result == null) {
+        if(result == null)
             return new ResponseEntity<>(new Message("Not found"), HttpStatus.NOT_FOUND);
-        }
 
         result.setShortName(moneyDto.getShortName());
         result.setName(moneyDto.getName());
-
         moneyService.updateMoney(result);
 
         return new ResponseEntity<>(new Message("Updated money"), HttpStatus.OK);
@@ -61,10 +57,8 @@ public class MoneyController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMoney(@PathVariable("id") long id) {
         MoneyDto result = moneyService.getMoneyById(id);
-
-        if(result == null) {
+        if(result == null)
             return new ResponseEntity<>(new Message("Not found"), HttpStatus.NOT_FOUND);
-        }
 
         moneyService.deleteMoney(result);
 

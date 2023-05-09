@@ -1,16 +1,14 @@
 package com.devmf.chairSystem.service.interfaces;
 
 import com.devmf.chairSystem.dto.ProductDto;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public interface IProductService {
-    List<ProductDto> getProducts();
+    List<ProductDto> getAllProducts();
 
     ProductDto getProductById(long id);
 

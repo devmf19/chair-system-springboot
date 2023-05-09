@@ -25,10 +25,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             @Param("endDate") Date endDate
     );
 
-    Optional<Event> findByState(String state);
-
-    List<Event> findAllByResolved(int resolved);
-
     List<Event> findAllByState(String state);
 
 

@@ -1,32 +1,22 @@
 package com.devmf.chairSystem.service.implementation;
 
 import com.devmf.chairSystem.dto.EventDetailDto;
-import com.devmf.chairSystem.dto.EventDto;
+import com.devmf.chairSystem.dto.TransactionDto;
+import com.devmf.chairSystem.model.EventDetail;
 import com.devmf.chairSystem.repository.EventDetailRepository;
 import com.devmf.chairSystem.service.interfaces.IEventDetailService;
 import com.devmf.chairSystem.util.mapper.EventDetailMapper;
-import com.devmf.chairSystem.util.mapper.EventMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class EventDetailService implements IEventDetailService {
-
     private EventDetailRepository eventDetailRepository;
+    private final TransactionService transactionService;
+    private final EventService eventService;
+    private final ProductService productService;
     private final EventDetailMapper eventDetailMapper;
-    private final EventMapper eventMapper;
-
-    @Override
-    public List<EventDetailDto> getAllEventDetails() {
-        return eventDetailRepository.findAll()
-                .stream()
-                .map(eventDetailMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public EventDetailDto getEventDetailById(long id) {
@@ -36,17 +26,21 @@ public class EventDetailService implements IEventDetailService {
     }
 
     @Override
-    public List<EventDetailDto> findEventDetailByEvent(EventDto eventDto) {
-        return eventDetailRepository.findAllByEvent(eventMapper.dtoToEntity(eventDto))
-                .stream()
-                .map(eventDetailMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public void saveEventDetail(EventDetailDto eventDetailDto) {
-        eventDetailRepository.save(
+        //se guarda el event detail
+        EventDetail ed = eventDetailRepository.save(
                 eventDetailMapper.dtoToEntity(eventDetailDto)
+        );
+
+        //se realiza la transaccion para sumar el valor del event detail a la cuenta del cliente
+        transactionService.saveTransaction(
+                new TransactionDto(
+                        0, //aumenta el saldo de la cuenta del cliente
+                        eventDetailDto.getAmount() * eventDetailDto.getPrice(),
+                        ed.getEvent().getName(),
+                        ed.getEvent().getCustomer().getAccount().getAccountNumber(),
+                        ed.getId()
+                )
         );
     }
 
@@ -55,6 +49,11 @@ public class EventDetailService implements IEventDetailService {
         eventDetailRepository.save(
                 eventDetailMapper.dtoToEntity(eventDetailDto)
         );
+
+        //se actualiza el valor de la transaccion que fue creada con el event detail (actualiza el saldo de la cuenta desde un trigger)
+        TransactionDto transaction = transactionService.getTransactionByEventDetailId(eventDetailDto.getId());
+        transaction.setAmount(eventDetailDto.getAmount() * eventDetailDto.getPrice());
+        transactionService.updateTransaction(transaction);
     }
 
     @Override
@@ -62,5 +61,9 @@ public class EventDetailService implements IEventDetailService {
         eventDetailRepository.delete(
                 eventDetailMapper.dtoToEntity(eventDetailDto)
         );
+
+        //delete transacction
+        TransactionDto transaction = transactionService.getTransactionByEventDetailId(eventDetailDto.getId());
+        transactionService.deleteTransaction(transaction);
     }
 }

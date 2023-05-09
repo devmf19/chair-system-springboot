@@ -1,19 +1,20 @@
 package com.devmf.chairSystem.model;
 
 import com.sun.istack.NotNull;
-import jakarta.persistence.*;
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "reception_detail")
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReceptionDetail implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -31,4 +32,5 @@ public class ReceptionDetail implements Serializable {
     @ManyToOne
     @JoinColumn(name = "reception_id")
     Reception reception;
+
 }

@@ -2,7 +2,6 @@ package com.devmf.chairSystem.service.interfaces;
 
 import com.devmf.chairSystem.dto.EventDto;
 import com.devmf.chairSystem.model.Event;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -12,9 +11,7 @@ import java.util.List;
 public interface IEventService {
     List<EventDto> getEvents();
 
-    EventDto getEventById(long id);
-
-    EventDto getEventByState(String state);
+    Event getEventById(long id);
 
     void saveEvent(EventDto eventDto);
 
@@ -25,8 +22,6 @@ public interface IEventService {
     boolean validateEvent(EventDto eventDto);
 
     List<EventDto> getEventsBetween(Date initialDate, Date endDate);
-
-    List<EventDto> getAllEventsByResolved(int resolved);
 
     List<EventDto> getAllEventsByState(String state);
 }

@@ -8,12 +8,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface IReceptionDetail {
-    List<ReceptionDetailDto> getAllReceptionDetail();
+public interface IReceptionDetailService {
+    ReceptionDetailDto getReceptionDetailByEventDetail(EventDetailDto eventDetailDto);
 
-    List<ReceptionDetailDto> getAllReceptionDetailByReception(ReceptionDto receptionDto);
-
-    ReceptionDetailDto getByReceptionDetailByEventDetail(EventDetailDto eventDetailDto);
+    ReceptionDetailDto getReceptionDetailById(long id);
 
     void saveReceptionDetail(ReceptionDetailDto receptionDetailDto);
 

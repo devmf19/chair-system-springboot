@@ -23,7 +23,7 @@ public class ProductController {
     @GetMapping("")
     public ResponseEntity<?> productsList() {
         return new ResponseEntity<>(
-                productService.getProducts(),
+                productService.getAllProducts(),
                 HttpStatus.OK
         );
     }
@@ -31,17 +31,17 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable("id") long id) {
         ProductDto result = productService.getProductById(id);
-        if(productService.validateProduct(result)){
+        if(productService.validateProduct(result))
             return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
-        }
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/availables")
     public ResponseEntity<?> availableProducts(@RequestBody DateRequest dateRequest) {
-        if(Date.valueOf(dateRequest.getInitialDate()).getTime() > Date.valueOf(dateRequest.getEndDate()).getTime()) {
+        if(Date.valueOf(dateRequest.getInitialDate()).getTime() > Date.valueOf(dateRequest.getEndDate()).getTime())
             return new ResponseEntity<>(new Message("End date can´t be greater than initial date"), HttpStatus.BAD_REQUEST);
-        }
+
         return new ResponseEntity<>(
                 productService.availableProducts(dateRequest.getInitialDate(), dateRequest.getEndDate()),
                 HttpStatus.OK
@@ -58,9 +58,9 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable("id") long id, @RequestBody ProductDto productDto) {
         ProductDto result = productService.getProductById(id);
-        if(productService.validateProduct(result)){
+        if(productService.validateProduct(result))
             return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
-        }
+
         productDto.setId(result.getId());
         productService.updateProduct(productDto);
         return new ResponseEntity<>(new Message("Updated product"), HttpStatus.OK);
@@ -69,9 +69,9 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") long id) {
         ProductDto result = productService.getProductById(id);
-        if(productService.validateProduct(result)){
+        if(productService.validateProduct(result))
             return  new ResponseEntity<>(new Message("Not found product"), HttpStatus.NOT_FOUND);
-        }
+
         productService.deleteProduct(result);
         return new ResponseEntity<>(new Message("Deleted product"), HttpStatus.OK);
     }

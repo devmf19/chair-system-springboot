@@ -1,19 +1,23 @@
 package com.devmf.chairSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
-import jakarta.persistence.*;
+import javax.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.validation.constraints.Min;
-import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "customer")
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Customer implements Serializable {
-    @Serial
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -43,8 +47,18 @@ public class Customer implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @NotNull
-    @Column(name = "balance")
-    @Min(0)
-    private double balance;
+    @JoinColumn(name = "account_id")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Account account;
+
+    public Customer(String dui, String name, String lastname, String phone, String address, String email, Account account) {
+        this.dui = dui;
+        this.name = name;
+        this.lastname = lastname;
+        this.phone = phone;
+        this.address = address;
+        this.email = email;
+        this.account = account;
+    }
 }
